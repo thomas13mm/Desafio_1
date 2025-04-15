@@ -7,4 +7,6 @@ SOURCES += \
         main.cpp
 
 HEADERS += \
+    Data.h \
+    Transformaciones.h \
     Transformaciones.h
