@@ -4,7 +4,7 @@
  Modulo de operaciones para aplicar operaciones de transformacion */
 
 unsigned int XOR(int a, int b){
-/*
+    /*
 Sinopsis:
     Funcion encargada de aplicar la operacion logica XOR a nivel de bits entre un numero a y un numero b
 Parametros:
@@ -17,7 +17,7 @@ Returns:
 }
 
 unsigned int rtRight(unsigned int bin, unsigned short int r){
-/*
+    /*
 Sinopsis:
     Funcion que realiza rotaciones de bits hacia la derecha (right)
 Parametros:
@@ -32,7 +32,7 @@ Returns:
 }
 
 unsigned int rtLeft(unsigned int bin, unsigned short int r){
-/*
+    /*
 Sinopsis:
     Funcion que realiza rotaciones de bits hacia la izquiera (izquierda)
 Parametros:
@@ -46,6 +46,5 @@ Returns:
     return (((bin & 255) << r) | ((bin & 255) >> mask)) & 255;
 
 }
-
 
 #endif // TRANSFORMACIONES_H
