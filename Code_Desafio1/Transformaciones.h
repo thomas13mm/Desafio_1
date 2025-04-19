@@ -73,4 +73,19 @@ Returns:
 
 }
 
+void mask(unsigned int mascara, unsigned int I, unsigned int w, unsigned int h, int seed){
+    /*
+Sinopsis:
+    Funcion encargada de enmascarar bits
+Parametros:
+    -(unsigned int )mascara:Variable que guarda la direccion de memoria de un arreglo dimanico con la mascara
+    -(unsigned int )I: Variablr que guarda la direccion de memoria de un arreglo dinamico con la imagen a enmascarar
+    -(unsigned int) h, w: altura y ancho de la mascara
+    -(int) seed: pixel a partir del cual se aplica la mascara
+*/
+    for(unsigned i=seed, k=0 ; k<(w*h); k++,i++){
+        I[i]=XOR(mascara[k], I[i]);
+    }
+}
+
 #endif // TRANSFORMACIONES_H

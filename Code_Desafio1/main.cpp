@@ -10,11 +10,12 @@ using namespace std;
 int main(){
     //Aqui van declaraciones "generales"
     unsigned short int txtcont=3;
-    unsigned int h=0;
-    unsigned int w=0;
+    unsigned int h, hm=0;
+    unsigned int w, wm=0;
     unsigned int seed=0;
     unsigned int cantpixelseed=0;
-    const int* ptrIM=loadPixels("I_M.bmp",NULL,NULL);
+    const char* ptrIM=loadPixels("I_M.bmp",NULL,NULL);
+    const char* ptrM=loadPixels("M.bmp", wm, hm);
     char* ptrID=loadPixels("I_D.bmp",w, h);;
     int* ptrtxt=nullptr;
 
@@ -30,11 +31,13 @@ int main(){
             switch(operacion){
             case 1://intentar desplazamiento a la izquierda
                 while(cont<=8 && ban){
-                    for(unsigned int i =0; i<=(h*k); i++){
+                    for(unsigned int i =0; i<(h*k); i++){
 
                         ptrIk[i]=Left(*ptrID[i],cont);
                     }
                     //enmascarar Ik
+                    mask(ptrM ,ptrIk, wm, hm, seed);
+
                     if(compararArreglos(ptrIk, ptrtxt, h*w)){
                         delete[] ptrID;
                         ptrID=ptrIk;
@@ -47,10 +50,11 @@ int main(){
 
             case 2://intentar desplazamiento a la derecha
                 while(cont<=8 && ban){
-                    for(unsigned int i =0; i<=(h*k); i++){
+                    for(unsigned int i =0; i<(h*k); i++){
                         ptrIk[i]=Right(*ptrID[i], cont);
                     }
                     //enmascarar Ik
+                    mask(ptrM ,ptrIk, wm, hm, seed);
 
                     if(compararArreglos(ptrIk, ptrtxt, h*w)){
                         delete[] ptrID;
@@ -64,10 +68,11 @@ int main(){
 
             case 3://intentar rotacion a la izquierd
                 while(cont<=8 && ban){
-                    for(unsigned int i=0; i<=(w*h);i++){
+                    for(unsigned int i=0; i<(w*h);i++){
                         ptrIk[i]=rtLeft(*ptr[i], cont);
                     }
                     //enmascarar Ik
+                    mask(ptrM ,ptrIk, wm, hm, seed);
 
                     if(compararArreglos(ptrIk, ptrtxt, h*w)){
                         delete[] ptrID;
@@ -80,10 +85,11 @@ int main(){
 
             case 4://intentar rotacion a la derecha
                 while(cont<=8 && ban){
-                    for (unsigned int i=0; i<=(w*h); i++){
+                    for (unsigned int i=0; i<(w*h); i++){
                         ptrIk[i]=rtRight(*ptrID[i],cont);
                     }
                     //enmascarar Ik
+                    mask(ptrM ,ptrIk, wm, hm, seed);
 
                     if(compararArreglos(ptrIk, ptrtxt, h*w)){ //Cada i de i=1 hasta i=8 se verifica si la rotacion es valida o no
                         delete[] ptrID;
@@ -96,10 +102,11 @@ int main(){
 
 
             case 5: //intentar xor
-                for (unsigned int i=0; i<=(w*h); i++){
-                    ptrIk[i]=XOR(int(ptrID[i]),ptrIM[i]);
+                for (unsigned int i=0; i<(w*h); i++){
+                    ptrIk[i]=XOR(int(ptrID[i]),int(ptrIM[i]));
                 }
                 //enmascarar Ik
+                mask(ptrM ,ptrIk, wm, hm, seed);
 
                 if(compararArreglos(ptrIk, ptrtxt, h*w)){
                     delete[] ptrID;
@@ -119,7 +126,14 @@ int main(){
         h, w, seed, cantpixelseed = 0;
     }
     delete[] ptrIM;
+    delete[] M;
     ptrIM=nullptr;
+    M=nullptr;
+    QString ruta= "C:\Users\Thomas\Desktop";
+
+    exportImage(ptrIk, w, k, ruta);
+    cout<<"Ejecucion exitosa";
+
 
     return 0;
 }
