@@ -16,6 +16,32 @@ Returns:
     return a ^ b;
 }
 
+unsigned int Left(unsigned int bin, unsigned short pos){
+    /*
+Sinopsis:
+    Funcion que reliza desplazamientos de bits hacia la izquierda
+Parametros:
+    -(unsigned int)bin: Binario que se va a desplazar (pos) posiciones
+    -(unsiged short)pos: Cantidad de posiciones a desplzar el binario
+Returns:
+    -(unsigned int)k: Nuevo binario post desplazamiento
+*/
+    return bin<<pos;
+}
+
+unsigned int Right(unsigned int bin, unsigned short pos){
+    /*
+Sinopsis:
+    Funcion que reliza desplazamientos de bits hacia la derecha
+Parametros:
+    -(unsigned int)bin: Binario que se va a desplazar (pos) posiciones
+    -(unsiged short)pos: Cantidad de posiciones a desplzar el binario
+Returns:
+    -(unsigned int)k: Nuevo binario post desplazamiento
+*/
+    return bin>>pos;
+}
+
 unsigned int rtRight(unsigned int bin, unsigned short int r){
     /*
 Sinopsis:
