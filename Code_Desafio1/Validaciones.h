@@ -3,7 +3,7 @@
 #include <iostream>
 #include <cstring> // Para strcmp, strlen, strcat
 
-bool compararArreglos(const int* arr1, const int* arr2, size_t size) {
+bool compararArreglos(unsigned char* arr1, unsigned int* arr2, size_t size) {
     /**
  *  arr1 Puntero al primer arreglo de enteros
  *  arr2 Puntero al segundo arreglo de enteros

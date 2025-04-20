@@ -73,7 +73,7 @@ Returns:
 
 }
 
-void mask(unsigned int mascara, unsigned int I, unsigned int w, unsigned int h, int seed){
+void mask(unsigned char* mascara, unsigned char* I, unsigned int w, unsigned int h, int seed){
     /*
 Sinopsis:
     Funcion encargada de enmascarar bits
@@ -83,8 +83,9 @@ Parametros:
     -(unsigned int) h, w: altura y ancho de la mascara
     -(int) seed: pixel a partir del cual se aplica la mascara
 */
-    for(unsigned i=seed, k=0 ; k<(w*h); k++,i++){
-        I[i]=XOR(mascara[k], I[i]);
+    unsigned int total_pixels = w * h;
+    for (unsigned int k = 0, i = seed; k < total_pixels;k++, i++) {
+        I[i] = XOR(mascara[k], I[i]);  // Modifica I directamente
     }
 }
 

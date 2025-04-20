@@ -3,37 +3,42 @@
 #include "Validaciones.h"
 #include "Data.h"
 #include <string>
-
+#include <QString>
 
 using namespace std;
 
 int main(){
     //Aqui van declaraciones "generales"
-    unsigned short int txtcont=3;
-    unsigned int h, hm=0;
-    unsigned int w, wm=0;
-    unsigned int seed=0;
-    unsigned int cantpixelseed=0;
-    const char* ptrIM=loadPixels("I_M.bmp",NULL,NULL);
-    const char* ptrM=loadPixels("M.bmp", wm, hm);
-    char* ptrID=loadPixels("I_D.bmp",w, h);;
-    int* ptrtxt=nullptr;
+    int h=0;
+    int w=0;
+    int hm=0;
+    int wm=0;
+    int seed=0;
+    int cantpixelseed=0;
+    unsigned char* ptrIM=loadPixels(QString("I_M.bmp"),w,h);
+    w=0, h =0;
+    unsigned char* ptrM=loadPixels(QString("M.bmp"), wm, hm);
+    unsigned char* ptrID=loadPixels(QString("I_D.bmp"),w, h);
+
+
 
     //Aqui Primer ciclo (for que itera sobre la cantidad de txt que hay para comparar)
-    for(txtcont; txtcont>=0; txtcont--){
-        ptrtxt=loadSeedMasking("M" + string(txtcont) + ".txt", seed, cantpixelseed);
-        unsigned int* ptrIk=new unsigned int [h*w];//apuntador a arreglo dinamico que va guardar la imagen despues de enmascarar y transformar
+    for(short int txtcont=2; txtcont>=0; txtcont--){
+        string filename = "M" + to_string(txtcont) + ".txt";
+        const char* txt = filename.c_str();
+        unsigned int* ptrtxt=loadSeedMasking(txt, seed, cantpixelseed);
+        unsigned char* ptrIk=new unsigned char [h*w];//apuntador a arreglo dinamico que va guardar la imagen despues de enmascarar y transformar
         unsigned short operacion=5;
-        unsigned short int new cont=1;
+        unsigned short int cont=1;
         bool ban = true;
         //Segundo ciclo (mientras que ID sea diferente de txt)
         do{
             switch(operacion){
             case 1://intentar desplazamiento a la izquierda
                 while(cont<=8 && ban){
-                    for(unsigned int i =0; i<(h*k); i++){
+                    for(int i =0; i<(h*w); i++){
 
-                        ptrIk[i]=Left(*ptrID[i],cont);
+                        ptrIk[i]=Left(ptrID[i],cont);
                     }
                     //enmascarar Ik
                     mask(ptrM ,ptrIk, wm, hm, seed);
@@ -46,12 +51,13 @@ int main(){
                     }
                     cont++;
                 }
-
+                operacion--;
+                break;
 
             case 2://intentar desplazamiento a la derecha
                 while(cont<=8 && ban){
-                    for(unsigned int i =0; i<(h*k); i++){
-                        ptrIk[i]=Right(*ptrID[i], cont);
+                    for(int i =0; i<(h*w); i++){
+                        ptrIk[i]=Right(ptrID[i], cont);
                     }
                     //enmascarar Ik
                     mask(ptrM ,ptrIk, wm, hm, seed);
@@ -64,12 +70,13 @@ int main(){
                     }
                     cont++;
                 }
+                operacion--;
+                break;
 
-
-            case 3://intentar rotacion a la izquierd
+            case 3://intentar rotacion a la izquierda
                 while(cont<=8 && ban){
-                    for(unsigned int i=0; i<(w*h);i++){
-                        ptrIk[i]=rtLeft(*ptr[i], cont);
+                    for(int i=0; i<(w*h);i++){
+                        ptrIk[i]=rtLeft(ptrID[i], cont);  // Corregido *ptr[i] a ptrID[i]
                     }
                     //enmascarar Ik
                     mask(ptrM ,ptrIk, wm, hm, seed);
@@ -82,11 +89,13 @@ int main(){
                     }
                     cont++;
                 }
+                operacion--;
+                break;
 
             case 4://intentar rotacion a la derecha
                 while(cont<=8 && ban){
-                    for (unsigned int i=0; i<(w*h); i++){
-                        ptrIk[i]=rtRight(*ptrID[i],cont);
+                    for (int i=0; i<(w*h); i++){
+                        ptrIk[i]=rtRight(ptrID[i],cont);  // Corregido *ptrID[i] a ptrID[i]
                     }
                     //enmascarar Ik
                     mask(ptrM ,ptrIk, wm, hm, seed);
@@ -99,10 +108,11 @@ int main(){
                     }
                     cont++;
                 }
-
+                operacion--;
+                break;
 
             case 5: //intentar xor
-                for (unsigned int i=0; i<(w*h); i++){
+                for (int i=0; i<(w*h); i++){
                     ptrIk[i]=XOR(int(ptrID[i]),int(ptrIM[i]));
                 }
                 //enmascarar Ik
@@ -114,26 +124,30 @@ int main(){
                     ptrIk=nullptr;
                     ban=false;
                 }
+                operacion--;
+                break;
             }
 
             cont=1;
-        }
-        while(ban);
+        } while(ban);
         //Aqui seteamos las variables a su punto "Inicial"
-        delete cont;
         delete[] ptrtxt;
         ptrtxt=nullptr;
-        h, w, seed, cantpixelseed = 0;
+        cantpixelseed = 0;
+        h=0;
+        w=0;
+        seed=0;
     }
     delete[] ptrIM;
-    delete[] M;
+    delete[] ptrM;  // Corregido "M" a "ptrM"
     ptrIM=nullptr;
-    M=nullptr;
-    QString ruta= "C:\Users\Thomas\Desktop";
+    ptrM=nullptr;  // Corregido "M" a "ptrM"
+    QString ruta= "C:\\Users\\Thomas\\Desktop";  // Corregido las barras invertidas
 
-    exportImage(ptrIk, w, k, ruta);
+    exportImage(ptrID, w, h, ruta);  // Corregido "k" a "h"
     cout<<"Ejecucion exitosa";
-
+    delete[] ptrID;
+    ptrID=nullptr;
 
     return 0;
 }
