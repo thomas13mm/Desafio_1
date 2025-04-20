@@ -40,14 +40,16 @@ int main(){
 
                         ptrIk[i]=Left(ptrID[i],cont);
                     }
-                    //enmascarar Ik
-                    mask(ptrM ,ptrIk, wm, hm, seed);
 
-                    if(compararArreglos(ptrIk, ptrtxt, h*w)){
+                    if(compararArreglos(ptrIk, ptrtxt, h*w,cantpixelseed, seed)){
+
+                        //enmascarar Ik
+                        mask(ptrM ,ptrIk, wm, hm, seed);
+
                         delete[] ptrID;
                         ptrID=ptrIk;
                         ptrIk=nullptr;
-                        ban=false;
+                        operacion=0
                     }
                     cont++;
                 }
@@ -59,14 +61,16 @@ int main(){
                     for(int i =0; i<(h*w); i++){
                         ptrIk[i]=Right(ptrID[i], cont);
                     }
-                    //enmascarar Ik
-                    mask(ptrM ,ptrIk, wm, hm, seed);
 
-                    if(compararArreglos(ptrIk, ptrtxt, h*w)){
+                    if(compararArreglos(ptrIk, ptrtxt, h*w,cantpixelseed,seed)){
+
+                        //enmascarar Ik
+                        mask(ptrM ,ptrIk, wm, hm, seed);
+
                         delete[] ptrID;
                         ptrID=ptrIk;
                         ptrIk=nullptr;
-                        ban=false;
+                        operacion=0
                     }
                     cont++;
                 }
@@ -78,14 +82,16 @@ int main(){
                     for(int i=0; i<(w*h);i++){
                         ptrIk[i]=rtLeft(ptrID[i], cont);  // Corregido *ptr[i] a ptrID[i]
                     }
-                    //enmascarar Ik
-                    mask(ptrM ,ptrIk, wm, hm, seed);
 
-                    if(compararArreglos(ptrIk, ptrtxt, h*w)){
+                    if(compararArreglos(ptrIk, ptrtxt, h*w, cantpixelseed,seed)){
+
+                        //enmascarar Ik
+                        mask(ptrM ,ptrIk, wm, hm, seed);
+
                         delete[] ptrID;
                         ptrID=ptrIk;
                         ptrIk=nullptr;
-                        ban=false;
+                        operacion=0
                     }
                     cont++;
                 }
@@ -97,14 +103,16 @@ int main(){
                     for (int i=0; i<(w*h); i++){
                         ptrIk[i]=rtRight(ptrID[i],cont);  // Corregido *ptrID[i] a ptrID[i]
                     }
-                    //enmascarar Ik
-                    mask(ptrM ,ptrIk, wm, hm, seed);
 
-                    if(compararArreglos(ptrIk, ptrtxt, h*w)){ //Cada i de i=1 hasta i=8 se verifica si la rotacion es valida o no
+                    if(compararArreglos(ptrIk, ptrtxt, h*w,cantpixelseed,seed)){ //Cada i de i=1 hasta i=8 se verifica si la rotacion es valida o no
+
+                        //enmascarar Ik
+                        mask(ptrM ,ptrIk, wm, hm, seed);
+
                         delete[] ptrID;
                         ptrID=ptrIk;
                         ptrIk=nullptr;
-                        ban=false;
+                        operecion=0;
                     }
                     cont++;
                 }
@@ -115,17 +123,24 @@ int main(){
                 for (int i=0; i<(w*h); i++){
                     ptrIk[i]=XOR(int(ptrID[i]),int(ptrIM[i]));
                 }
-                //enmascarar Ik
-                mask(ptrM ,ptrIk, wm, hm, seed);
 
-                if(compararArreglos(ptrIk, ptrtxt, h*w)){
+                if(compararArreglos(ptrIk, ptrtxt, h*w, cantpixelseed, seed)){
+
+                    //enmascarar Ik
+                    mask(ptrM ,ptrIk, wm, hm, seed);
+
                     delete[] ptrID;
                     ptrID=ptrIk;
                     ptrIk=nullptr;
-                    ban=false;
+                    operacion=0;
                 }
                 operacion--;
                 break;
+
+            default:
+                ban=false;
+
+
             }
 
             cont=1;
