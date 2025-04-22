@@ -15,15 +15,13 @@ int main(){
     int wm=0;
     int seed=0;
     int cantpixelseed=0;
-    unsigned char* ptrIM=loadPixels(QString("I_M.bmp"),w,h);
+    unsigned char* ptrID=loadPixels(QString("I_D.bmp"),w, h);
     w=0, h =0;
     unsigned char* ptrM=loadPixels(QString("M.bmp"), wm, hm);
-    unsigned char* ptrID=loadPixels(QString("I_D.bmp"),w, h);
-
-
+    unsigned char* ptrIM=loadPixels(QString("I_M.bmp"), w, h);
 
     //Aqui Primer ciclo (for que itera sobre la cantidad de txt que hay para comparar)
-    for(short int txtcont=2; txtcont>=0; txtcont--){
+    for(short int txtcont=6; txtcont>=0; txtcont--){
         string filename = "M" + to_string(txtcont) + ".txt";
         const char* txt = filename.c_str();
         unsigned int* ptrtxt=loadSeedMasking(txt, seed, cantpixelseed);
@@ -41,7 +39,7 @@ int main(){
                         ptrIk[i]=Left(ptrID[i],cont);
                     }
 
-                    if(compararArreglos(ptrIk, ptrtxt, h*w,cantpixelseed, seed)){
+                    if(compararArreglos(ptrIk, ptrtxt,h*w,cantpixelseed, seed)){
 
                         //enmascarar Ik
                         mask(ptrM ,ptrIk, wm, hm, seed);
@@ -49,7 +47,7 @@ int main(){
                         delete[] ptrID;
                         ptrID=ptrIk;
                         ptrIk=nullptr;
-                        operacion=0
+                        ban=false;
                     }
                     cont++;
                 }
@@ -62,7 +60,7 @@ int main(){
                         ptrIk[i]=Right(ptrID[i], cont);
                     }
 
-                    if(compararArreglos(ptrIk, ptrtxt, h*w,cantpixelseed,seed)){
+                    if(compararArreglos(ptrIk, ptrtxt,w*h,cantpixelseed,seed)){
 
                         //enmascarar Ik
                         mask(ptrM ,ptrIk, wm, hm, seed);
@@ -70,7 +68,7 @@ int main(){
                         delete[] ptrID;
                         ptrID=ptrIk;
                         ptrIk=nullptr;
-                        operacion=0
+                        ban=false;
                     }
                     cont++;
                 }
@@ -83,7 +81,7 @@ int main(){
                         ptrIk[i]=rtLeft(ptrID[i], cont);  // Corregido *ptr[i] a ptrID[i]
                     }
 
-                    if(compararArreglos(ptrIk, ptrtxt, h*w, cantpixelseed,seed)){
+                    if(compararArreglos(ptrIk, ptrtxt, h*w,cantpixelseed,seed)){
 
                         //enmascarar Ik
                         mask(ptrM ,ptrIk, wm, hm, seed);
@@ -91,7 +89,7 @@ int main(){
                         delete[] ptrID;
                         ptrID=ptrIk;
                         ptrIk=nullptr;
-                        operacion=0
+                        ban=false;
                     }
                     cont++;
                 }
@@ -112,7 +110,7 @@ int main(){
                         delete[] ptrID;
                         ptrID=ptrIk;
                         ptrIk=nullptr;
-                        operecion=0;
+                        ban=false;
                     }
                     cont++;
                 }
@@ -124,23 +122,23 @@ int main(){
                     ptrIk[i]=XOR(int(ptrID[i]),int(ptrIM[i]));
                 }
 
-                if(compararArreglos(ptrIk, ptrtxt, h*w, cantpixelseed, seed)){
+                if(compararArreglos(ptrIk, ptrtxt ,h*w , cantpixelseed, seed)){
 
                     //enmascarar Ik
                     mask(ptrM ,ptrIk, wm, hm, seed);
+                    exportImage(ptrIk, w, h, QString("C:/Users/Thomas/Desktop/Original.bmp"));
 
                     delete[] ptrID;
                     ptrID=ptrIk;
                     ptrIk=nullptr;
-                    operacion=0;
+                    ban=false;
                 }
                 operacion--;
                 break;
 
             default:
+                cout<<"Error al construir la imagen"<<endl;
                 ban=false;
-
-
             }
 
             cont=1;
@@ -149,17 +147,15 @@ int main(){
         delete[] ptrtxt;
         ptrtxt=nullptr;
         cantpixelseed = 0;
-        h=0;
-        w=0;
         seed=0;
     }
     delete[] ptrIM;
     delete[] ptrM;  // Corregido "M" a "ptrM"
     ptrIM=nullptr;
     ptrM=nullptr;  // Corregido "M" a "ptrM"
-    QString ruta= "C:\\Users\\Thomas\\Desktop";  // Corregido las barras invertidas
-
-    exportImage(ptrID, w, h, ruta);  // Corregido "k" a "h"
+    //QString ruta= "C:\Usuarios\Thomas\Escritorio\I_D.bmp";  // Corregido las barras invertidas
+    //QString ruta= 'C:\Users\Thomas\Desktop';
+      // Corregido "k" a "h"
     cout<<"Ejecucion exitosa";
     delete[] ptrID;
     ptrID=nullptr;

@@ -3,7 +3,7 @@
 #include <iostream>
 #include <cstring> // Para strcmp, strlen, strcat
 
-bool compararArreglos(unsigned char* arr1, unsigned int* arr2, size_t size, unsigned int lines, int seed) {
+bool compararArreglos(unsigned char* arr1, unsigned int* arr2, size_t size,unsigned int lines, int seed) {
     /**
  *  arr1 Puntero al primer arreglo de enteros
  *  arr2 Puntero al segundo arreglo de enteros
@@ -15,11 +15,11 @@ bool compararArreglos(unsigned char* arr1, unsigned int* arr2, size_t size, unsi
         arr2[k]=arr2[k]%255;
     }
     // Compara cada elemento de los arreglos
-    for (size_t i = seed, h=0 ; i < (lines*3); ++i, h++) {
-        if (arr1[i] != arr2[h]) {
+    for (size_t i = 0, m=0 ; i < lines*3; ++i, m++) {
+        //std::cout<<i<<' '<<int(arr1[i+seed])<<' '<<arr2[m]<<'\n';
+        if (int(arr1[seed+i]) != arr2[m]) {
             return false; // Si algún elemento difiere, retorna false
         }
-        std::cout<<h<<'\n';
     }
     return true; // Si todos los elementos son iguales, retorna true
 }
