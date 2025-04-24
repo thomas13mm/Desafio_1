@@ -89,4 +89,11 @@ Parametros:
     }
 }
 
+void unmask(unsigned char* mascara, unsigned char* I, unsigned int w, unsigned int h, int seed) {
+    unsigned int total_pixels = w * h;
+    for (unsigned int k = 0, i = seed; k < total_pixels; k++, i++) {
+        I[i] = XOR(mascara[k], I[i]);  // Mismo XOR para deshacer
+    }
+}
+
 #endif // TRANSFORMACIONES_H

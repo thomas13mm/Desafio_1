@@ -3,25 +3,31 @@
 #include <iostream>
 #include <cstring> // Para strcmp, strlen, strcat
 
-bool compararArreglos(unsigned char* arr1, unsigned int* arr2, size_t size,unsigned int lines, int seed) {
-    /**
- *  arr1 Puntero al primer arreglo de enteros
- *  arr2 Puntero al segundo arreglo de enteros
- * size Número de elementos a comparar en ambos arreglos.
- *  true Si todos los elementos son iguales en las mismas posiciones.
- *  false Si al menos un elemento difiere o si los arreglos tienen tamaños diferentes.
- */
-    for(unsigned int k=0; k<(lines*3);k++){
-        arr2[k]=arr2[k]%255;
+bool compararArreglos(unsigned char* arr1, unsigned int* arr2, size_t size, unsigned int lines, int seed) {
+
+
+    // Verificar parámetros válidos
+    if (arr1 == nullptr || arr2 == nullptr || size == 0 || lines == 0) {
+        return false;
     }
-    // Compara cada elemento de los arreglos
-    for (size_t i = 0, m=0 ; i < lines*3; ++i, m++) {
-        //std::cout<<i<<' '<<int(arr1[i+seed])<<' '<<arr2[m]<<'\n';
-        if (int(arr1[seed+i]) != arr2[m]) {
-            return false; // Si algún elemento difiere, retorna false
+
+    // Verificar que seed esté dentro de los límites
+    if (seed < 0 || (seed + lines * 3) > size) {
+        return false;
+    }
+
+    // Comparar cada componente (R, G, B) de los píxeles especificados
+    for (unsigned int i = 0, m = 0; i < lines * 3; ++i, ++m) {
+        // Asegurar que el valor del TXT esté en rango 0-255
+        unsigned int valorTxt = arr2[m] % 256;
+
+        // Comparar con el valor de la imagen (teniendo en cuenta la seed)
+        if (arr1[seed + i] != valorTxt) {
+            return false;
         }
     }
-    return true; // Si todos los elementos son iguales, retorna true
+
+    return true;
 }
 
 // Función que valida y ajusta el nombre del archivo usando memoria dinámica
