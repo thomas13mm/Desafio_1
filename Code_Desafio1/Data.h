@@ -178,4 +178,18 @@ unsigned int* loadSeedMasking(const char* nombreArchivo, int &seed, int &n_pixel
     return RGB;
 }
 
+
+void fromIntToChar(unsigned int* ptrK, unsigned char* ptrID, int size) {
+    for(int i = 0; i < size; i++) {
+        ptrID[i] = ptrK[i];  // Conversión implícita (segura si ptrK[i] <= 255)
+    }
+}
+
+int fromChartoInt(unsigned int i, unsigned char* K){
+    /*
+    Sinopsis:
+        Funcion encargada de convertir valores unsigned char to int
+*/
+    return int(K[i]);
+}
 #endif // DATA_H

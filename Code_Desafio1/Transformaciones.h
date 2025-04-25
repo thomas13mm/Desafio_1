@@ -1,5 +1,6 @@
 #ifndef TRANSFORMACIONES_H
 #define TRANSFORMACIONES_H
+#include "Data.h"
 /*
  Modulo de operaciones para aplicar operaciones de transformacion */
 
@@ -73,7 +74,7 @@ Returns:
 
 }
 
-void mask(unsigned char* mascara, unsigned char* I, unsigned int w, unsigned int h, int seed){
+void mask(unsigned char* mascara, unsigned int* I, unsigned int w, unsigned int h, int seed){
     /*
 Sinopsis:
     Funcion encargada de enmascarar bits
@@ -83,16 +84,17 @@ Parametros:
     -(unsigned int) h, w: altura y ancho de la mascara
     -(int) seed: pixel a partir del cual se aplica la mascara
 */
-    unsigned int total_pixels = w * h;
-    for (unsigned int k = 0, i = seed; k < total_pixels;k++, i++) {
-        I[i] = XOR(mascara[k], I[i]);  // Modifica I directamente
+    unsigned int total_pixels = w * h *3;
+    for (unsigned int k = 0 ; k < total_pixels;k++) {
+        I[k+seed] = mascara[k] + I[k+seed];  // Modifica I directamente
     }
 }
 
-void unmask(unsigned char* mascara, unsigned char* I, unsigned int w, unsigned int h, int seed) {
-    unsigned int total_pixels = w * h;
-    for (unsigned int k = 0, i = seed; k < total_pixels; k++, i++) {
-        I[i] = XOR(mascara[k], I[i]);  // Mismo XOR para deshacer
+void unmask(unsigned char* mascara, unsigned int* I, unsigned int w, unsigned int h, int seed) {
+    unsigned int total_pixels = w * h * 3;
+    for (unsigned int k = 0; k < total_pixels; k++) {
+
+        I[k+seed] = I[seed+k] - fromChartoInt(k,mascara);  ;  // Mismo XOR para deshacer
     }
 }
 

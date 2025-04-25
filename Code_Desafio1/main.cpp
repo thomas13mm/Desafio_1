@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include "Transformaciones.h"
 #include "Validaciones.h"
@@ -7,6 +6,7 @@
 #include <QString>
 
 using namespace std;
+
 
 int main(){
     int h = 0, w = 0;
@@ -23,8 +23,7 @@ int main(){
         string filename = "M" + to_string(txtcont) + ".txt";
         const char* txt = filename.c_str();
         unsigned int* ptrtxt = loadSeedMasking(txt, seed, cantpixelseed);
-        unsigned char* ptrIk = new unsigned char[h * w];
-
+        unsigned int* ptrIk = new unsigned int[h * w * 3];
         unsigned short operacion = 5;
         unsigned short int cont = 1;
         bool ban = true;
@@ -33,16 +32,17 @@ int main(){
             switch (operacion) {
             case 1:  // desplazamiento a la izquierda
                 while (cont <= 8 && ban) {
-                    for (int i = 0; i < h * w; i++)
+                    for (int i = 0; i < h * w * 3; i++)
                         ptrIk[i] = Left(ptrID[i], cont);
 
                     mask(ptrM, ptrIk, wm, hm, seed);
 
-                    if (compararArreglos(ptrIk, ptrtxt, h * w, cantpixelseed, seed)) {
+                    if (compararArreglos(ptrIk, ptrtxt, h * w * 3, cantpixelseed, seed)) {
                         unmask(ptrM, ptrIk, wm, hm, seed);
-                        exportImage(ptrIk, w, h, QString("C:/Users/Thomas/Desktop/Original.bmp"));
-                        delete[] ptrID;
-                        ptrID = ptrIk;
+
+                        fromIntToChar(ptrIk, ptrID, h*w*3);
+                        exportImage(ptrID, w, h, QString("C:/Users/Thomas/Desktop/Original.bmp"));
+                        delete[] ptrIk;
                         ptrIk = nullptr;
                         ban = false;
                     }
@@ -55,16 +55,16 @@ int main(){
             case 2:  // desplazamiento a la derecha
                 cont = 1;
                 while (cont <= 8 && ban) {
-                    for (int i = 0; i < h * w; i++)
+                    for (int i = 0; i < h * w * 3; i++)
                         ptrIk[i] = Right(ptrID[i], cont);
 
                     mask(ptrM, ptrIk, wm, hm, seed);
 
-                    if (compararArreglos(ptrIk, ptrtxt, h * w, cantpixelseed, seed)) {
+                    if (compararArreglos(ptrIk, ptrtxt, h * w * 3, cantpixelseed, seed)) {
                         unmask(ptrM, ptrIk, wm, hm, seed);
-                        exportImage(ptrIk, w, h, QString("C:/Users/Thomas/Desktop/Original.bmp"));
-                        delete[] ptrID;
-                        ptrID = ptrIk;
+                        fromIntToChar(ptrIk, ptrID, h*w*3);
+                        exportImage(ptrID, w, h, QString("C:/Users/Thomas/Desktop/Original.bmp"));
+                        delete[] ptrIk;
                         ptrIk = nullptr;
                         ban = false;
                     }
@@ -77,16 +77,16 @@ int main(){
             case 3:  // rotación a la izquierda
                 cont = 1;
                 while (cont <= 8 && ban) {
-                    for (int i = 0; i < h * w; i++)
+                    for (int i = 0; i < h * w * 3; i++)
                         ptrIk[i] = rtLeft(ptrID[i], cont);
 
                     mask(ptrM, ptrIk, wm, hm, seed);
 
-                    if (compararArreglos(ptrIk, ptrtxt, h * w, cantpixelseed, seed)) {
+                    if (compararArreglos(ptrIk, ptrtxt, h * w * 3, cantpixelseed, seed)) {
                         unmask(ptrM, ptrIk, wm, hm, seed);
-                        exportImage(ptrIk, w, h, QString("C:/Users/Thomas/Desktop/Original.bmp"));
-                        delete[] ptrID;
-                        ptrID = ptrIk;
+                        fromIntToChar(ptrIk, ptrID, h*w*3);
+                        exportImage(ptrID, w, h, QString("C:/Users/Thomas/Desktop/Original.bmp"));
+                        delete[] ptrIk;
                         ptrIk = nullptr;
                         ban = false;
                     }
@@ -99,16 +99,16 @@ int main(){
             case 4:  // rotación a la derecha
                 cont = 1;
                 while (cont <= 8 && ban) {
-                    for (int i = 0; i < h * w; i++)
+                    for (int i = 0; i < h * w * 3; i++)
                         ptrIk[i] = rtRight(ptrID[i], cont);
 
                     mask(ptrM, ptrIk, wm, hm, seed);
 
-                    if (compararArreglos(ptrIk, ptrtxt, h * w, cantpixelseed, seed)) {
+                    if (compararArreglos(ptrIk, ptrtxt, h * w * 3 , cantpixelseed, seed)) {
                         unmask(ptrM, ptrIk, wm, hm, seed);
-                        exportImage(ptrIk, w, h, QString("C:/Users/Thomas/Desktop/Original.bmp"));
-                        delete[] ptrID;
-                        ptrID = ptrIk;
+                        fromIntToChar(ptrIk, ptrID, h*w*3);
+                        exportImage(ptrID, w, h, QString("C:/Users/Thomas/Desktop/Original.bmp"));
+                        delete[] ptrIk;
                         ptrIk = nullptr;
                         ban = false;
                     }
@@ -119,16 +119,18 @@ int main(){
                 break;
 
             case 5:  // XOR con imagen I_M
-                for (int i = 0; i < h * w; i++)
+                for (int i = 0; i < h * w * 3; i++){
                     ptrIk[i] = XOR(int(ptrID[i]), int(ptrIM[i]));
+                }
 
                 mask(ptrM, ptrIk, wm, hm, seed);
 
-                if (compararArreglos(ptrIk, ptrtxt, h * w, cantpixelseed, seed)) {
+                if (compararArreglos(ptrIk, ptrtxt, h * w * 3, cantpixelseed, seed)) {
                     unmask(ptrM, ptrIk, wm, hm, seed);
-                    exportImage(ptrIk, w, h, QString("C:/Users/Thomas/Desktop/Original.bmp"));
-                    delete[] ptrID;
-                    ptrID = ptrIk;
+                    exportImage(ptrID, w, h, QString("C:/Users/Thomas/Desktop/Original.bmp"));
+                    fromIntToChar(ptrIk, ptrID, h*w*3);
+                    exportImage(ptrID, w, h, QString("C:/Users/Thomas/Desktop/Original.bmp"));
+                    delete[] ptrIk;
                     ptrIk = nullptr;
                     ban = false;
                 }
@@ -150,10 +152,11 @@ int main(){
         seed = 0;
     }
 
+
     delete[] ptrIM;
     delete[] ptrM;
     delete[] ptrID;
-    ptrIM = ptrM = ptrID = nullptr;
+    ptrIM = ptrM = ptrID =  nullptr;
 
     cout << "Ejecucion exitosa" << endl;
     return 0;
