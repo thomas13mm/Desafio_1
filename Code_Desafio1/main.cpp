@@ -13,18 +13,36 @@ int main() {
     int hm = 0, wm = 0;
     int seed = 0;
     int cantpixelseed = 0;
+    int numTxtFiles = 0;
 
     string operacionesRealizadas = "";  // <- Aquí guardamos las operaciones exitosas
+
+    // Solicitar al usuario el número de archivos txt
+    cout << "Ingrese el numero de archivos txt: ";
+    cin >> numTxtFiles;
+
+    // Validar que sea un número positivo
+    if (numTxtFiles < 0) {
+        cout << "Error: Debe ingresar un numero positivo." << endl;
+        return 1;
+    }
 
     unsigned char* ptrID = loadPixels(QString("I_D.bmp"), w, h);
     w = 0; h = 0;
     unsigned char* ptrM = loadPixels(QString("M.bmp"), wm, hm);
     unsigned char* ptrIM = loadPixels(QString("I_M.bmp"), w, h);
 
-    for (short int txtcont = 2; txtcont >= 0; txtcont--) {
+    for (short int txtcont = numTxtFiles; txtcont >= 0; txtcont--) {
         string filename = "M" + to_string(txtcont) + ".txt";
         const char* txt = filename.c_str();
         unsigned int* ptrtxt = loadSeedMasking(txt, seed, cantpixelseed);
+
+        // Verificar si el archivo se cargó correctamente
+        if (ptrtxt == nullptr) {
+            cout << "Advertencia: No se pudo cargar el archivo " << filename << ". Continuando..." << endl;
+            continue;  // Saltar a la siguiente iteración si el archivo no existe
+        }
+
         unsigned int* ptrIk = new unsigned int[h * w * 3];
         unsigned short operacion = 5;
         unsigned short int cont = 1;
@@ -131,8 +149,10 @@ int main() {
 
         } while (ban);
 
-        delete[] ptrtxt;
-        ptrtxt = nullptr;
+        if (ptrtxt != nullptr) {
+            delete[] ptrtxt;
+            ptrtxt = nullptr;
+        }
         cantpixelseed = 0;
         seed = 0;
     }
